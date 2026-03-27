@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jostein Bjørge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f4f0;
+      --surface: #ffffff;
+      --border: #e2e1db;
+      --text: #111110;
+      --muted: #6b6b66;
+      --tag-bg: #eceae4;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .header-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 2rem;
+      min-height: 280px;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      padding: 3.5rem 0;
+    }
+
+    /* ── Header viz ── */
+    .header-viz {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .header-viz svg {
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      display: block;
+    }
+
+    .hero-identity {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--border);
+      border: 1.5px solid var(--border);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-name {
+      font-size: 1.9rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text);
+    }
+
+    .hero-role {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+      margin-top: 0.2rem;
+    }
+
+    .hero-tagline {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 500px;
+    }
+
+    /* ── Animations ── */
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50%       { opacity: 1; }
+    }
+    @keyframes dash {
+      to { stroke-dashoffset: -24; }
+    }
+    @keyframes rise {
+      from { transform: scaleY(0); }
+      to   { transform: scaleY(1); }
+    }
+    @keyframes draw {
+      from { stroke-dashoffset: 400; }
+      to   { stroke-dashoffset: 0; }
+    }
+
+    .pipe-dot { animation: pulse 2.4s ease-in-out infinite; }
+    .pipe-dot:nth-child(2) { animation-delay: 0.4s; }
+    .pipe-dot:nth-child(3) { animation-delay: 0.8s; }
+    .pipe-dot:nth-child(4) { animation-delay: 1.2s; }
+    .pipe-dot:nth-child(5) { animation-delay: 1.6s; }
+
+    .flow-line {
+      stroke-dasharray: 5 5;
+      animation: dash 1.2s linear infinite;
+    }
+
+    .chart-line {
+      stroke-dasharray: 400;
+      stroke-dashoffset: 400;
+      animation: draw 1.6s ease-out forwards;
+    }
+
+    .bar {
+      transform-origin: bottom;
+      animation: rise 0.7s ease-out forwards;
+    }
+    .bar:nth-child(2) { animation-delay: 0.08s; }
+    .bar:nth-child(3) { animation-delay: 0.16s; }
+    .bar:nth-child(4) { animation-delay: 0.24s; }
+    .bar:nth-child(5) { animation-delay: 0.32s; }
+    .bar:nth-child(6) { animation-delay: 0.40s; }
+    .bar:nth-child(7) { animation-delay: 0.48s; }
+    .bar:nth-child(8) { animation-delay: 0.56s; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    /* ── Sections ── */
+    section {
+      padding: 3.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.4rem;
+    }
+
+    /* ── About ── */
+    .about-text {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 600px;
+    }
+
+    .about-text strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ── Architecture diagram ── */
+    .arch-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 1.75rem 1.5rem 1.5rem;
+    }
+
+    .arch-card svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Skills ── */
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--tag-bg);
+      border-radius: 4px;
+      padding: 0.35rem 0.8rem;
+      border: none;
+      transition: background 0.18s, color 0.18s;
+      cursor: default;
+    }
+
+    .skill-tag:hover {
+      background: var(--text);
+      color: #fff;
+    }
+
+    /* ── Connect ── */
+    .connect-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.55rem 1.1rem;
+      text-decoration: none;
+      transition: background 0.18s, border-color 0.18s, color 0.18s;
+    }
+
+    .link-btn:hover {
+      background: var(--text);
+      border-color: var(--text);
+      color: #fff;
+    }
+
+    .link-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* ── Footer ── */
+    footer { padding: 2.5rem 0; }
+    footer p { font-size: 0.78rem; color: var(--border); }
+
+    /* ── Responsive ── */
+    @media (max-width: 620px) {
+      .header-inner { grid-template-columns: 1fr; min-height: auto; padding: 2.5rem 1.5rem; }
+      .header-viz { display: none; }
+      .hero { padding: 0; }
+      .hero-name { font-size: 1.55rem; }
+      .container { padding: 0 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="header-inner">
+      <div class="hero">
+        <div class="hero-identity">
+          <div class="avatar">
+            <img src="profile.jpg" alt="Jostein Bjørge" />
+          </div>
+          <div>
+            <div class="hero-name">Jostein Bjørge</div>
+            <div class="hero-role">Tech Lead &middot; Data Engineering &middot; Banking &amp; Finance</div>
+          </div>
+        </div>
+        <p class="hero-tagline">
+          Building data products and solutions that turn complexity into clarity —
+          for teams, banks, and the people they serve.
+        </p>
+      </div>
+
+      <!-- Right: charts & grid decoration -->
+      <div class="header-viz">
+        <svg viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- Background grid -->
+          <line x1="0"   y1="55"  x2="320" y2="55"  stroke="#e2e1db" stroke-width="1"/>
+          <line x1="0"   y1="110" x2="320" y2="110" stroke="#e2e1db" stroke-width="1"/>
+          <line x1="0"   y1="165" x2="320" y2="165" stroke="#e2e1db" stroke-width="1"/>
+          <line x1="64"  y1="0"   x2="64"  y2="220" stroke="#e2e1db" stroke-width="1"/>
+          <line x1="128" y1="0"   x2="128" y2="220" stroke="#e2e1db" stroke-width="1"/>
+          <line x1="192" y1="0"   x2="192" y2="220" stroke="#e2e1db" stroke-width="1"/>
+          <line x1="256" y1="0"   x2="256" y2="220" stroke="#e2e1db" stroke-width="1"/>
+
+          <!-- Area fill under line chart -->
+          <path d="M10,178 C40,158 70,138 100,118 C130,98 160,82 200,62 C230,46 270,30 310,16 L310,200 L10,200 Z"
+            fill="#111110" opacity="0.04"/>
+
+          <!-- Line chart -->
+          <path class="chart-line"
+            d="M10,178 C40,158 70,138 100,118 C130,98 160,82 200,62 C230,46 270,30 310,16"
+            stroke="#111110" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- Data points on line -->
+          <circle cx="10"  cy="178" r="3"   fill="#fff" stroke="#111110" stroke-width="1.5"/>
+          <circle cx="100" cy="118" r="3"   fill="#fff" stroke="#111110" stroke-width="1.5"/>
+          <circle cx="200" cy="62"  r="3"   fill="#fff" stroke="#111110" stroke-width="1.5"/>
+          <circle cx="310" cy="16"  r="4"   fill="#111110"/>
+
+          <!-- Bar chart — full width, 16 bars -->
+          <g>
+            <rect class="bar" x="12"  y="208" width="13" height="10" rx="2" fill="#111110" opacity="0.10"/>
+            <rect class="bar" x="30"  y="202" width="13" height="16" rx="2" fill="#111110" opacity="0.15"/>
+            <rect class="bar" x="48"  y="196" width="13" height="22" rx="2" fill="#111110" opacity="0.20"/>
+            <rect class="bar" x="66"  y="200" width="13" height="18" rx="2" fill="#111110" opacity="0.15"/>
+            <rect class="bar" x="84"  y="191" width="13" height="27" rx="2" fill="#111110" opacity="0.26"/>
+            <rect class="bar" x="102" y="185" width="13" height="33" rx="2" fill="#111110" opacity="0.32"/>
+            <rect class="bar" x="120" y="188" width="13" height="30" rx="2" fill="#111110" opacity="0.28"/>
+            <rect class="bar" x="138" y="180" width="13" height="38" rx="2" fill="#111110" opacity="0.38"/>
+            <rect class="bar" x="156" y="182" width="13" height="36" rx="2" fill="#111110" opacity="0.35"/>
+            <rect class="bar" x="174" y="176" width="13" height="42" rx="2" fill="#111110" opacity="0.42"/>
+            <rect class="bar" x="192" y="180" width="13" height="38" rx="2" fill="#111110" opacity="0.38"/>
+            <rect class="bar" x="210" y="172" width="13" height="46" rx="2" fill="#111110" opacity="0.46"/>
+            <rect class="bar" x="228" y="174" width="13" height="44" rx="2" fill="#111110" opacity="0.44"/>
+            <rect class="bar" x="246" y="168" width="13" height="50" rx="2" fill="#111110" opacity="0.50"/>
+            <rect class="bar" x="264" y="170" width="13" height="48" rx="2" fill="#111110" opacity="0.48"/>
+            <rect class="bar" x="282" y="164" width="13" height="54" rx="2" fill="#111110" opacity="0.55"/>
+          </g>
+
+        </svg>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── Content ── -->
+  <div class="container">
+
+    <!-- About -->
+    <section>
+      <p class="section-label">About</p>
+      <p class="about-text">
+        I'm a Tech Lead with a focus on <strong>data engineering</strong> and
+        <strong>information architecture</strong> in the banking and finance sector.
+        I lead teams building robust data products and pipelines, bridging the gap
+        between technical execution and business strategy. My work spans hands-on
+        engineering, team leadership, and translating complex data challenges into
+        measurable outcomes.
+      </p>
+    </section>
+
+    <!-- Data Platform Architecture -->
+    <section>
+      <div class="arch-card">
+        <svg viewBox="0 0 720 228" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+          <!--
+            LAYOUT (left → right)
+            Sources (x=8, w=106)  →  Snowflake container (x=132, w=362)  →  Consumers (x=514, w=128)
+              inside Snowflake:
+                staging sub-box  (x=142, w=104)
+                dbt badge        (x=278, w=50)
+                core sub-box     (x=378, w=104)
+            Fan-in: 4 source centers (48/98/148/198) converge into staging center (122)
+            Fan-out: core center (122) diverges to 4 consumer centers (48/98/148/198)
+          -->
+
+          <!-- ── Snowflake container ── -->
+          <rect x="132" y="8" width="362" height="212" rx="8" fill="#fafaf8" stroke="#d8d7d0" stroke-width="1.2"/>
+
+          <!-- ── Fan-in connectors: sources → staging ── -->
+          <path class="flow-line" d="M114,43  C128,43  136,122 150,122" stroke="#111110" stroke-width="1.2" opacity="0.3" fill="none"/>
+          <path class="flow-line" d="M114,90  C128,90  136,122 150,122" stroke="#111110" stroke-width="1.2" opacity="0.3" fill="none"/>
+          <path class="flow-line" d="M114,137 C128,137 136,122 150,122" stroke="#111110" stroke-width="1.2" opacity="0.3" fill="none"/>
+          <path class="flow-line" d="M114,184 C128,184 136,122 150,122" stroke="#111110" stroke-width="1.2" opacity="0.3" fill="none"/>
+
+          <!-- Staging sub-box — x=150 w=132 right=282 (8px left margin from container) -->
+          <rect x="150" y="36" width="132" height="176" rx="5" fill="#ffffff" stroke="#e2e1db" stroke-width="1"/>
+          <text x="216" y="50" font-size="6.5" font-family="Inter,sans-serif" font-weight="700"
+            fill="#6b6b66" text-anchor="middle" dominant-baseline="central" letter-spacing="0.08em">STAGING</text>
+          <!-- 8 small raw tables, inner x=160 w=112 -->
+          <line x1="160" y1="60" x2="272" y2="60" stroke="#e2e1db" stroke-width="0.8"/>
+          <!-- table 1 -->
+          <rect x="160" y="64"  width="112" height="13" rx="2" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.7"/>
+          <rect x="160" y="64"  width="112" height="4"  rx="2" fill="#d8d7d0" opacity="0.55"/>
+          <rect x="163" y="70"  width="68"  height="2.5" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="163" y="74"  width="48"  height="2.5" rx="1" fill="#e2e1db" opacity="0.5"/>
+          <!-- table 2 -->
+          <rect x="160" y="83"  width="112" height="13" rx="2" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.7"/>
+          <rect x="160" y="83"  width="112" height="4"  rx="2" fill="#d8d7d0" opacity="0.55"/>
+          <rect x="163" y="89"  width="80"  height="2.5" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="163" y="93"  width="56"  height="2.5" rx="1" fill="#e2e1db" opacity="0.5"/>
+          <!-- table 3 -->
+          <rect x="160" y="102" width="112" height="13" rx="2" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.7"/>
+          <rect x="160" y="102" width="112" height="4"  rx="2" fill="#d8d7d0" opacity="0.55"/>
+          <rect x="163" y="108" width="58"  height="2.5" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="163" y="112" width="84"  height="2.5" rx="1" fill="#e2e1db" opacity="0.5"/>
+          <!-- table 4 -->
+          <rect x="160" y="121" width="112" height="13" rx="2" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.7"/>
+          <rect x="160" y="121" width="112" height="4"  rx="2" fill="#d8d7d0" opacity="0.55"/>
+          <rect x="163" y="127" width="74"  height="2.5" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="163" y="131" width="52"  height="2.5" rx="1" fill="#e2e1db" opacity="0.5"/>
+          <!-- table 5 -->
+          <rect x="160" y="140" width="112" height="13" rx="2" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.7"/>
+          <rect x="160" y="140" width="112" height="4"  rx="2" fill="#d8d7d0" opacity="0.55"/>
+          <rect x="163" y="146" width="64"  height="2.5" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="163" y="150" width="86"  height="2.5" rx="1" fill="#e2e1db" opacity="0.5"/>
+          <!-- table 6 -->
+          <rect x="160" y="159" width="112" height="13" rx="2" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.7"/>
+          <rect x="160" y="159" width="112" height="4"  rx="2" fill="#d8d7d0" opacity="0.55"/>
+          <rect x="163" y="165" width="80"  height="2.5" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="163" y="169" width="46"  height="2.5" rx="1" fill="#e2e1db" opacity="0.5"/>
+          <!-- table 7 -->
+          <rect x="160" y="178" width="112" height="13" rx="2" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.7"/>
+          <rect x="160" y="178" width="112" height="4"  rx="2" fill="#d8d7d0" opacity="0.55"/>
+          <rect x="163" y="184" width="70"  height="2.5" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="163" y="188" width="60"  height="2.5" rx="1" fill="#e2e1db" opacity="0.5"/>
+          <!-- table 8 -->
+          <rect x="160" y="197" width="112" height="13" rx="2" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.7"/>
+          <rect x="160" y="197" width="112" height="4"  rx="2" fill="#d8d7d0" opacity="0.55"/>
+          <rect x="163" y="203" width="88"  height="2.5" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="163" y="207" width="60"  height="2.5" rx="1" fill="#e2e1db" opacity="0.5"/>
+
+          <!-- Staging → core connector -->
+          <line class="flow-line" x1="282" y1="122" x2="342" y2="122"
+            stroke="#111110" stroke-width="1.2" opacity="0.35"/>
+
+          <!-- Core sub-box — x=342 w=134 right=476 (8px right margin from container) -->
+          <rect x="342" y="36" width="134" height="176" rx="5" fill="#ffffff" stroke="#e2e1db" stroke-width="1"/>
+          <text x="409" y="50" font-size="6.5" font-family="Inter,sans-serif" font-weight="700"
+            fill="#6b6b66" text-anchor="middle" dominant-baseline="central" letter-spacing="0.08em">CORE</text>
+          <!-- 3 consolidated tables, inner x=352 w=114 -->
+          <line x1="352" y1="60" x2="466" y2="60" stroke="#e2e1db" stroke-width="0.8"/>
+          <!-- table 1 -->
+          <rect x="352" y="64"  width="114" height="40" rx="3" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.8"/>
+          <rect x="352" y="64"  width="114" height="9"  rx="3" fill="#c8c7c0" opacity="0.45"/>
+          <rect x="356" y="77"  width="88"  height="3" rx="1" fill="#e2e1db" opacity="0.8"/>
+          <rect x="356" y="83"  width="72"  height="3" rx="1" fill="#e2e1db" opacity="0.6"/>
+          <rect x="356" y="89"  width="82"  height="3" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="356" y="95"  width="64"  height="3" rx="1" fill="#e2e1db" opacity="0.5"/>
+          <!-- table 2 -->
+          <rect x="352" y="118" width="114" height="40" rx="3" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.8"/>
+          <rect x="352" y="118" width="114" height="9"  rx="3" fill="#c8c7c0" opacity="0.45"/>
+          <rect x="356" y="131" width="80"  height="3" rx="1" fill="#e2e1db" opacity="0.8"/>
+          <rect x="356" y="137" width="92"  height="3" rx="1" fill="#e2e1db" opacity="0.6"/>
+          <rect x="356" y="143" width="70"  height="3" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="356" y="149" width="86"  height="3" rx="1" fill="#e2e1db" opacity="0.5"/>
+          <!-- table 3 -->
+          <rect x="352" y="172" width="114" height="40" rx="3" fill="#f5f4f2" stroke="#e2e1db" stroke-width="0.8"/>
+          <rect x="352" y="172" width="114" height="9"  rx="3" fill="#c8c7c0" opacity="0.45"/>
+          <rect x="356" y="185" width="84"  height="3" rx="1" fill="#e2e1db" opacity="0.8"/>
+          <rect x="356" y="191" width="66"  height="3" rx="1" fill="#e2e1db" opacity="0.6"/>
+          <rect x="356" y="197" width="76"  height="3" rx="1" fill="#e2e1db" opacity="0.7"/>
+          <rect x="356" y="203" width="60"  height="3" rx="1" fill="#e2e1db" opacity="0.5"/>
+
+          <!-- ── Fan-out connectors: core → consumers ── -->
+          <path class="flow-line" d="M476,122 C492,122 492,43  514,43"  stroke="#111110" stroke-width="1.2" opacity="0.3" fill="none"/>
+          <path class="flow-line" d="M476,122 C492,122 492,90  514,90"  stroke="#111110" stroke-width="1.2" opacity="0.3" fill="none"/>
+          <path class="flow-line" d="M476,122 C492,122 492,137 514,137" stroke="#111110" stroke-width="1.2" opacity="0.3" fill="none"/>
+          <path class="flow-line" d="M476,122 C492,122 492,184 514,184" stroke="#111110" stroke-width="1.2" opacity="0.3" fill="none"/>
+
+          <!-- ── Source nodes ── -->
+
+          <!-- Core Banking Systems — y=31, centre=43 -->
+          <rect x="8" y="31" width="106" height="24" rx="5" fill="#ffffff" stroke="#c8c7c0" stroke-width="1.1"/>
+          <g transform="translate(24,43)" stroke="#555" stroke-width="1.1" fill="none">
+            <ellipse cx="0" cy="-5" rx="7" ry="2.5"/>
+            <path d="M -7,-5 L -7,5"/>
+            <path d="M 7,-5 L 7,5"/>
+            <ellipse cx="0" cy="5" rx="7" ry="2.5"/>
+            <ellipse cx="0" cy="0" rx="7" ry="2.5"/>
+          </g>
+          <text x="38" y="43" font-size="7" font-family="Inter,sans-serif" font-weight="600"
+            fill="#333" dominant-baseline="central">Core Banking Systems</text>
+
+          <!-- CRM — y=78, centre=90 -->
+          <rect x="8" y="78" width="106" height="24" rx="5" fill="#ffffff" stroke="#c8c7c0" stroke-width="1.1"/>
+          <g transform="translate(24,90)" stroke="#555" stroke-width="1.1" fill="none">
+            <circle cx="0" cy="-4" r="4"/>
+            <path d="M -7,6 C -7,1 7,1 7,6"/>
+          </g>
+          <text x="38" y="90" font-size="7.5" font-family="Inter,sans-serif" font-weight="600"
+            fill="#333" dominant-baseline="central">CRM</text>
+
+          <!-- Market Data — y=125, centre=137 -->
+          <rect x="8" y="125" width="106" height="24" rx="5" fill="#ffffff" stroke="#c8c7c0" stroke-width="1.1"/>
+          <g transform="translate(24,137)" stroke="#555" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="-7,5 -3,-2 1,2 5,-5 8,-7"/>
+          </g>
+          <text x="38" y="137" font-size="7.5" font-family="Inter,sans-serif" font-weight="600"
+            fill="#333" dominant-baseline="central">Market Data</text>
+
+          <!-- Loan Process — y=172, centre=184 -->
+          <rect x="8" y="172" width="106" height="24" rx="5" fill="#ffffff" stroke="#c8c7c0" stroke-width="1.1"/>
+          <g transform="translate(24,184)" stroke="#555" stroke-width="1.1" fill="none">
+            <path d="M -6,-8 L 2,-8 L 6,-4 L 6,8 L -6,8 Z"/>
+            <path d="M 2,-8 L 2,-4 L 6,-4"/>
+            <line x1="-3" y1="-1" x2="3" y2="-1"/>
+            <line x1="-3" y1="3"  x2="3" y2="3"/>
+          </g>
+          <text x="38" y="184" font-size="7.5" font-family="Inter,sans-serif" font-weight="600"
+            fill="#333" dominant-baseline="central">Loan Process</text>
+
+          <!-- ── Consumer nodes ── -->
+
+          <!-- Data Mart — y=31, centre=43 -->
+          <rect x="514" y="31" width="128" height="24" rx="5" fill="#ffffff" stroke="#111110" stroke-width="1.2"/>
+          <g transform="translate(530,43)" stroke="#111110" stroke-width="1.1" fill="none">
+            <rect x="-7" y="-7" width="14" height="14" rx="1"/>
+            <line x1="-7" y1="-2" x2="7" y2="-2"/>
+            <line x1="-7" y1="3"  x2="7" y2="3"/>
+            <line x1="-1" y1="-7" x2="-1" y2="7"/>
+            <line x1="4"  y1="-7" x2="4"  y2="7"/>
+          </g>
+          <text x="546" y="43" font-size="7.5" font-family="Inter,sans-serif" font-weight="600"
+            fill="#111110" dominant-baseline="central">Data Mart</text>
+
+          <!-- BI Reports — y=78, centre=90 -->
+          <rect x="514" y="78" width="128" height="24" rx="5" fill="#ffffff" stroke="#111110" stroke-width="1.2"/>
+          <g transform="translate(530,90)" fill="#111110">
+            <rect x="-7" y="0"  width="4" height="6" rx="1" opacity="0.5"/>
+            <rect x="-1" y="-5" width="4" height="11" rx="1" opacity="0.75"/>
+            <rect x="5"  y="-3" width="4" height="9" rx="1"/>
+          </g>
+          <text x="546" y="90" font-size="7.5" font-family="Inter,sans-serif" font-weight="600"
+            fill="#111110" dominant-baseline="central">BI &amp; Reports</text>
+
+          <!-- Reg. Reporting — y=125, centre=137 -->
+          <rect x="514" y="125" width="128" height="24" rx="5" fill="#ffffff" stroke="#111110" stroke-width="1.2"/>
+          <g transform="translate(530,137)" stroke="#111110" stroke-width="1.1" fill="none">
+            <path d="M -6,-8 L 2,-8 L 6,-4 L 6,8 L -6,8 Z"/>
+            <path d="M 2,-8 L 2,-4 L 6,-4"/>
+            <line x1="-3" y1="-1" x2="3" y2="-1"/>
+            <line x1="-3" y1="3"  x2="3" y2="3"/>
+            <line x1="-3" y1="6"  x2="0" y2="6"/>
+          </g>
+          <text x="546" y="137" font-size="7.5" font-family="Inter,sans-serif" font-weight="600"
+            fill="#111110" dominant-baseline="central">Reg. Reporting</text>
+
+          <!-- ML Pipeline — y=172, centre=184 -->
+          <rect x="514" y="172" width="128" height="24" rx="5" fill="#ffffff" stroke="#111110" stroke-width="1.2"/>
+          <g transform="translate(530,184)" fill="#111110" stroke="#111110" stroke-width="0.7">
+            <circle cx="-7" cy="-4" r="2"/>
+            <circle cx="-7" cy="4"  r="2"/>
+            <circle cx="0"  cy="0"  r="2"/>
+            <circle cx="7"  cy="-4" r="2"/>
+            <circle cx="7"  cy="4"  r="2"/>
+            <line x1="-5" y1="-4" x2="-2" y2="0"/>
+            <line x1="-5" y1="4"  x2="-2" y2="0"/>
+            <line x1="2"  y1="0"  x2="5"  y2="-4"/>
+            <line x1="2"  y1="0"  x2="5"  y2="4"/>
+          </g>
+          <text x="546" y="184" font-size="7.5" font-family="Inter,sans-serif" font-weight="600"
+            fill="#111110" dominant-baseline="central">ML Pipeline</text>
+
+
+        </svg>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section>
+      <p class="section-label">Skills &amp; Tools</p>
+      <div class="skills">
+        <span class="skill-tag">Data Engineering</span>
+        <span class="skill-tag">Technical Leadership</span>
+        <span class="skill-tag">Information Architecture</span>
+        <span class="skill-tag">Project Management</span>
+        <span class="skill-tag">Business Analytics</span>
+        <span class="skill-tag">Snowflake</span>
+        <span class="skill-tag">dbt</span>
+      </div>
+    </section>
+
+    <!-- Connect -->
+    <section>
+      <p class="section-label">Connect</p>
+      <div class="connect-links">
+        <a class="link-btn" href="https://www.linkedin.com/in/josteinb/" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.449-2.136 2.941v5.665h-3.554V9h3.413v1.566h.049c.476-.9 1.636-1.849 3.368-1.849 3.602 0 4.267 2.369 4.267 5.455v6.28zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
+          </svg>
+          LinkedIn
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2026 Jostein Bjørge</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
